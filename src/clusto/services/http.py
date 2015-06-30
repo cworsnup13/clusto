@@ -146,7 +146,13 @@ class EntityAPI(object):
 
         Requires HTTP parameter "key"
         '''
-        self.obj.del_attrs(request.params['key'])
+        kwargs = dict(request.params.items())
+        if 'number' in kwargs:
+            kwargs['number'] = int(kwargs['number'])
+        if 'value'in kwargs:
+            kwargs['value'] = str(kwargs['value'])
+
+        self.obj.del_attrs(**kwargs)
         return self.show(request)
 
     def attrs(self, request):
